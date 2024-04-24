@@ -23,7 +23,12 @@ export default function register() {
   
     try {
       const res = await axios.post('http://localhost:1337/api/auth/local/register', data);
-      console.log(res);
+      // resest the state
+      setFirstName('');
+      setLastName('');  
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
     } catch (err) {
     console.log(err);
     }
