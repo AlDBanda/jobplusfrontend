@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/form.scss';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { parseErrors } from '../../utils/parseErrors';
 
 export default function register() {
   const [firstName, setFirstName] = useState('');
@@ -30,7 +31,7 @@ export default function register() {
       setPassword('');
       setConfirmPassword('');
     } catch (err) {
-    console.log(err);
+    console.log(parseErrors(err));
     }
   };
 
