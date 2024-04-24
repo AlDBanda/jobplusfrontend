@@ -9,12 +9,16 @@ export default function register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+  };
+
   return (
-    <div class="form form--page">
-      <div class="form__group form__group--page">
-        <label class="form__label">First name</label>
+    <form className="form form--page" onSubmit={handleSubmit}>
+      <div className="form__group form__group--page">
+        <label className="form__label">First name</label>
         <input 
-        class="form__field" 
+        className="form__field" 
         type="text" 
         placeholder="First name"
         value={firstName}
@@ -22,10 +26,10 @@ export default function register() {
          />
       </div>
 
-      <div class="form__group form__group--page">
-        <label class="form__label">Last name</label>
+      <div className="form__group form__group--page">
+        <label className="form__label">Last name</label>
         <input 
-        class="form__field" 
+        className="form__field" 
         type="text" 
         placeholder="Last name"
         value={lastName}
@@ -33,10 +37,10 @@ export default function register() {
          />
       </div>
 
-      <div class="form__group form__group--page">
-        <label class="form__label">Email</label>
+      <div className="form__group form__group--page">
+        <label className="form__label">Email</label>
         <input 
-        class="form__field" 
+        className="form__field" 
         type="text" 
         placeholder="Email"
         value={email}
@@ -44,35 +48,35 @@ export default function register() {
          />
       </div>
 
-      <div class="form__group form__group--page">
-        <label class="form__label">Choose password</label>
+      <div className="form__group form__group--page">
+        <label className="form__label">Choose password</label>
         <input 
-        class="form__field" 
-        type="text" 
+        className="form__field" 
+        type="password" 
         placeholder="Choose password"
         value={password}
         onChange={(e) => setPassword(e.target.value)} 
         />
       </div>
 
-      <div class="form__group form__group--page">
-        <label class="form__label">Confirm Password</label>
+      <div className="form__group form__group--page">
+        <label className="form__label">Confirm Password</label>
         <input 
-        class="form__field" 
-        type="text" 
+        className="form__field" 
+        type="password" 
         placeholder="Confirm Password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
          />
       </div>
 
-      <div class="form__group form__group--page">
-        <input class="form__btn" type="submit" value="Register" />
+      <div className="form__group form__group--page">
+        <input className="form__btn" type="submit" value="Register" />
       </div>
 
       <footer>
         Already have an account? <Link to='/login'>Login</Link>
       </footer>
-    </div>
+    </form>
   );
 }
