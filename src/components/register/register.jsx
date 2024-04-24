@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/form.scss';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function register() {
   const [firstName, setFirstName] = useState('');
@@ -11,6 +12,21 @@ export default function register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
+
+    const data = {
+      firstName,
+      lastName,
+      email,
+      password,
+      username: email,
+    };
+  
+    try {
+      const res = await axios.post('http://localhost:1337/api/auth/local/register', data);
+      console.log(res);
+    } catch (err) {
+    console.log(err);
+    }
   };
 
   return (
