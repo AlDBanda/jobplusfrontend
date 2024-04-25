@@ -23,9 +23,9 @@ export default function register() {
     };
   
     try {
-      const res = await axios.post('http://localhost:1337/api/auth/local/register', data);
-      // resest the state
-      setFirstName('');
+      const res = await axios.post('http://localhost:1337/api/auth/local/registerr', data);
+      // reset the state
+      setFirstName(''); 
       setLastName('');  
       setEmail('');
       setPassword('');
