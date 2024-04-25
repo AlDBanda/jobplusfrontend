@@ -6,4 +6,12 @@ export const parseErrors = (err) => {
       details: err.response.data.error.details,
     }
   }
+
+  //check if it a network error
+  if (err?.message === "Network Error") {
+    return {
+      message: "unable to connect to the server endpoint provided",
+      details: []
+    }
+  }
 };
