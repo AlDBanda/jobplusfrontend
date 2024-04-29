@@ -14,8 +14,19 @@ export default function register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const [alert, setAlert] = useState({});
+
   const handleSubmit = async (e) => {
     e.preventDefault(); 
+
+    //check if passowrd and confirm password match
+    if (password !== confirmPassword) {
+      setAlert({
+        message: 'Password and confirm password do not match',
+        details: [],
+      })
+      return; //exit early
+    }
 
     const data = {
       firstName,
@@ -26,21 +37,28 @@ export default function register() {
     };
   
     try {
-      const res = await axios.post('http://localhost:1337/api/auth/local/registerr', data);
+      const res = await axios.post(
+        'http://localhost:1337/api/auth/local/register',
+         data
+         );
       // reset the state
       setFirstName(''); 
       setLastName('');  
       setEmail('');
       setPassword('');
       setConfirmPassword('');
+      setAlert({});
     } catch (err) {
-    console.log(parseErrors(err));
+      setAlert(parseErrors(err));
+    //  console.log(err.response.data.error.details);
     }
   };
 
   return (
     <>
-    <Alert />
+  
+      <Alert type="error" data={alert} />
+    
     <form className="form form--page" onSubmit={handleSubmit}>
       <div className="form__group form__group--page">
         <label className="form__label">First name</label>

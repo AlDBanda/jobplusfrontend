@@ -1,15 +1,17 @@
 import React from 'react'
 import './alert.scss'
 
-export default function alert() {
+export default function Alert({ type, data: { message, details=[] } }) {
+  if (!message) return null;
+
   return (
-      <div className="alert alert--error">
-      <p className="alert__message">This is a message</p>
+      <div className={`alert alert--${type}`}>
+      <p className="alert__message">{message}</p>
       <ul className="alert__details">
-        <li className="alert__details">This is detail 1</li>
-        <li className="alert__details">This is detail 2</li>
-        <li className="alert__details">This is detail 3</li>
+        {details?.map((detail, index) => (
+          <li key={index} className="alert__detail">{detail.message}</li>
+        ))}
       </ul>
     </div>
-  )
+  );
 }
