@@ -11,7 +11,7 @@ export const parseErrors = (err) => {
   if (err?.message === "Network Error") {
     return {
       message: "unable to connect to the server endpoint provided",
-      details: []
+      details: [],
     }
   }
 
@@ -19,13 +19,14 @@ export const parseErrors = (err) => {
   if (err?.response?.status === 403) {
     return {
       message: 'Your role does not have access to this resource',
-      details: []
+      details: [],
     }
   }
 
   //check for generic error
   return {
     message: 'An unexpected error occured. Contact your administrator',
-    details:[]
+    details:[],
+    type:'error'
   }
 };
