@@ -27,6 +27,5 @@ export const parseErrors = (err) => {
   return {
     message: 'An unexpected error occured. Contact your administrator',
     details:[],
-    type:'error'
   }
 };
