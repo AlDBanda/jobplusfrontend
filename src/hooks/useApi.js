@@ -8,9 +8,9 @@ export const useApi = () => {
       data: options.data || {},
       params: options.params || {},
     });
-    return res;
+      options.onSuccess && options.onSuccess(res)
   } catch (err) {
-    console.log(err);
+    options.onFailure && options.onFailure(err)
   }
  };
 

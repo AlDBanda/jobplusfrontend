@@ -15,6 +15,14 @@ export default function login() {
   const navigate = useNavigate();
   const { post} = useApi();
 
+  const handleSuccess = () => {
+    // //reset our state
+    setIdentifier('');
+    setPassword('');
+    //navigate to my homepage
+    navigate('/');
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevent default for submission
 
@@ -22,9 +30,13 @@ export default function login() {
       identifier,
       password,
     };
-
-   const res = await post('auth/local', {data: data});
-   console.log(res);
+ 
+    //Callback
+    await post('auth/local', {
+    data: data,
+    onSuccess: (res) => handleSuccess(),
+    onFailure: (err) => setAlert(parseErrors(err))
+   });
     // try {
     //   //make a post request to the backend api
     //   const res = await axios.post(
