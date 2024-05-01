@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/form.scss';
 import axios from 'axios';
+import Alert from '../alert/Alert';
+import { parseErrors } from '../../utils/parseErrors';
+import { useNavigate } from 'react-router-dom';
 
 export default function login() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [alert, setAlert] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevent default for submission
@@ -25,14 +31,19 @@ export default function login() {
     //reset our state
     setIdentifier('');
     setPassword('');
+
+    //navigate to my homepage
+    navigate('/');
     } catch (err) {
-      console.log(err);
+      setAlert(parseErrors(err));
     }
   };
 
 
   return (
-    <form className="form form--page" onSubmit={handleSubmit}>
+    <>
+    <Alert data={alert} />
+     <form className="form form--page" onSubmit={handleSubmit}>
       <div className="form__group form__group--page">
         <label className="form__label">Email</label>
         <input 
@@ -62,6 +73,7 @@ export default function login() {
       <footer>
         Dont have an account? <Link to='/register'>Register</Link>
       </footer>
-    </form>
+     </form>
+    </>
   );
 }
