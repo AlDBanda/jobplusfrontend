@@ -1,42 +1,35 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/form.scss';
-import axios from 'axios';
 import Alert from '../alert/Alert';
-import { parseErrors } from '../../utils/parseErrors';
+import { useApi } from '../../hooks/useApi';
+
 
 
 export default function forgot_password() {
   const [email, setEmail] = useState('');
   const [alert, setAlert] = useState('');
 
+  const { post } = useApi();
   
-
-  const handleSubmit = async (e) => {
-    e.preventDefault(); //prevent default for submission
-
-    const data = {
-      email,
-    };
-
-    try {
-      //make a post request to the backend api
-      const res = await axios.post(
-      'http://localhost:1337/api/auth/forgot-password',
-      data
-      );
+  const handleSuccess = () => {
     //reset our state
     setEmail('');
-  
+    //set success alert
+    setAlert({
+      type: 'success',
+      message: 'Please check your email for further instructions.',
+    })
+  };
 
- //set success alert
- setAlert({
-    type: 'success',
-    message: 'Please check your email for further instructions.',
-   });
-  } catch (err) {
-      setAlert(parseErrors(err));
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();// prevent default form submission
+  
+  await post ('auth/forgot-password', {
+    data: { email },
+    onSuccess: (res) => handleSuccess(),
+    onFailure: (err) => setAlert(err)
+    });
   };
 
 

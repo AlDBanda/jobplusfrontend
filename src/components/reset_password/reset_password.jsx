@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/form.scss';
-import axios from 'axios';
 import Alert from '../alert/Alert';
-import { parseErrors } from '../../utils/parseErrors';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useApi } from '../../hooks/useApi';
 
 export default function reset_password() {
   const [password, setPassword] = useState('');
@@ -14,36 +13,27 @@ export default function reset_password() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { post } = useApi();
+
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');
 
-  console.log('code', code);
+  const handleSuccess = () => {
+    //reset our state
+    setPasswordConfirmation('');
+    setPassword('');
+    //navigate to the login page
+    navigate ('/login');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevent default for submission
 
-    const data = {
-      passwordConfirmation,
-      password,
-      code,
-    };
-
-    try {
-      //make a post request to the backend api
-      const res = await axios.post(
-      'http://localhost:1337/api/auth/reset-password',
-      data
-      );
-      
-    //reset our state
-    setPasswordConfirmation('');
-    setPassword('');
-
-    //navigate to my homepage
-    navigate('/login');
-    } catch (err) {
-      setAlert(parseErrors(err));
-    }
+  await post('auth/reset-password', {
+    data: { passwordConfirmation, password, code},
+    onSuccess: (res) => handleSuccess(),
+    onFailure: (err) => setAlert(err)
+   })
   };
 
 

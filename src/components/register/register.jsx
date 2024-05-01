@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import '../styles/form.scss';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { parseErrors } from '../../utils/parseErrors';
 import Alert from '../alert/Alert';
+import { useApi } from '../../hooks/useApi';
 
 
 
@@ -15,6 +14,7 @@ export default function register() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const [alert, setAlert] = useState({});
+  const { post } = useApi();
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
@@ -35,13 +35,9 @@ export default function register() {
       password,
       username: email,
     };
-  
-    try {
-      const res = await axios.post(
-        'http://localhost:1337/api/auth/local/register',
-         data
-         );
-      // reset the state
+
+    const handleSuccess = () => {
+       // reset the state
       setFirstName(''); 
       setLastName('');  
       setEmail('');
@@ -52,11 +48,37 @@ export default function register() {
         details: [],
         type: 'success',
       });
-    } catch (err) {
-      setAlert(parseErrors(err));
-    //  console.log(err.response.data.error.details);
     }
+
+    await post ('auth/local/register',{
+      data: data,
+      onSuccess: () => handleSuccess(),
+      onFailure: (err) => setAlert(err) 
+
+    })
   };
+  
+  //   try {
+  //     const res = await axios.post(
+  //       'http://localhost:1337/api/auth/local/register',
+  //        data
+  //        );
+  //     // reset the state
+  //     setFirstName(''); 
+  //     setLastName('');  
+  //     setEmail('');
+  //     setPassword('');
+  //     setConfirmPassword('');
+  //     setAlert({
+  //       message: 'Account created successfully',
+  //       details: [],
+  //       type: 'success',
+  //     });
+  //   } catch (err) {
+  //     setAlert(parseErrors(err));
+  //   //  console.log(err.response.data.error.details);
+  //   }
+  // };
 
   return (
     <>

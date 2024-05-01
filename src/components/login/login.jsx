@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/form.scss';
-import axios from 'axios';
 import Alert from '../alert/Alert';
-import { parseErrors } from '../../utils/parseErrors';
 import { useNavigate } from 'react-router-dom';
 import { useApi } from '../../hooks/useApi';
 
@@ -26,16 +24,12 @@ export default function login() {
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevent default for submission
 
-    const data = {
-      identifier,
-      password,
-    };
  
     //Callback
     await post('auth/local', {
-    data: data,
+    data: { identifier, password},
     onSuccess: (res) => handleSuccess(),
-    onFailure: (err) => setAlert(parseErrors(err))
+    onFailure: (err) => setAlert(err)
    });
     // try {
     //   //make a post request to the backend api
