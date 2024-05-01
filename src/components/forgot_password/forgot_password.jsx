@@ -4,37 +4,37 @@ import '../styles/form.scss';
 import axios from 'axios';
 import Alert from '../alert/Alert';
 import { parseErrors } from '../../utils/parseErrors';
-import { useNavigate } from 'react-router-dom';
 
-export default function login() {
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
+
+export default function forgot_password() {
+  const [email, setEmail] = useState('');
   const [alert, setAlert] = useState('');
 
-  const navigate = useNavigate();
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevent default for submission
 
     const data = {
-      identifier,
-      password,
+      email,
     };
 
     try {
       //make a post request to the backend api
       const res = await axios.post(
-      'http://localhost:1337/api/auth/local',
+      'http://localhost:1337/api/auth/forgot-password',
       data
       );
-      console.log(res);
     //reset our state
-    setIdentifier('');
-    setPassword('');
+    setEmail('');
+  
 
-    //navigate to my homepage
-    navigate('/');
-    } catch (err) {
+ //set success alert
+ setAlert({
+    type: 'success',
+    message: 'Please check your email for further instructions.',
+   });
+  } catch (err) {
       setAlert(parseErrors(err));
     }
   };
@@ -50,20 +50,9 @@ export default function login() {
         className="form__field" 
         type="text" 
         placeholder="Email" 
-        value={identifier}
-        onChange={(e) => setIdentifier(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         />
-      </div>
-
-      <div className="form__group form__group--page">
-        <label className="form__label">Password</label>
-        <input 
-        className="form__field" 
-        type="password" 
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-         />
       </div>
 
       <div className="form__group form__group--page">
@@ -71,8 +60,7 @@ export default function login() {
       </div>
 
       <footer>
-        Dont have an account? <Link to='/register'>Register</Link>
-        or <Link to='/forgot-password'>Forgot Password</Link>
+        Have an account? <Link to='/login'>Login</Link>
       </footer>
      </form>
     </>
