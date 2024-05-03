@@ -4,6 +4,7 @@ import '../styles/form.scss';
 import Alert from '../alert/Alert';
 import { useNavigate } from 'react-router-dom';
 import { useApi } from '../../hooks/useApi';
+import cookie from 'js-cookie';
 
 export default function login() {
   const [identifier, setIdentifier] = useState('');
@@ -13,7 +14,9 @@ export default function login() {
   const navigate = useNavigate();
   const { post} = useApi();
 
-  const handleSuccess = () => {
+  const handleSuccess = (res) => {
+    //set the jwt token in a cookie
+    cookie.set('jobplus-token', res.data.jwt, { expires: 4 / 24 }); //Expires in 4 hours
     // //reset our state
     setIdentifier('');
     setPassword('');
@@ -28,25 +31,10 @@ export default function login() {
     //Callback
     await post('auth/local', {
     data: { identifier, password},
-    onSuccess: (res) => handleSuccess(),
+    onSuccess: (res) => handleSuccess(res),
     onFailure: (err) => setAlert(err)
    });
-    // try {
-    //   //make a post request to the backend api
-    //   const res = await axios.post(
-    //   'http://localhost:1337/api/auth/local',
-    //   data
-    //   );
-    //   console.log(res);
-    // //reset our state
-    // setIdentifier('');
-    // setPassword('');
 
-    // //navigate to my homepage
-    // navigate('/');
-    // } catch (err) {
-    //   setAlert(parseErrors(err));
-    // }
   };
 
 
