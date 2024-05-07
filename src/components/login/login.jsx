@@ -5,21 +5,27 @@ import Alert from '../alert/Alert';
 import { useNavigate } from 'react-router-dom';
 import { useApi } from '../../hooks/useApi';
 import cookie from 'js-cookie';
+import { useAuth } from  '../../contexts/AuthContext';
 
 export default function login() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [alert, setAlert] = useState('');
+  const [alert, setAlert] = useState({});
+
+  const { setIsAuthenticated } = useAuth();
 
   const navigate = useNavigate();
   const { post} = useApi();
 
   const handleSuccess = (res) => {
     //set the jwt token in a cookie
-    cookie.set('jobplus-token', res.data.jwt, { expires: 4 / 24 }); //Expires in 4 hours
+    // cookie.set('jobplus-token', res.data.jwt, { expires: 4 / 24 }); //Expires in 4 hours
+    
     // //reset our state
     setIdentifier('');
     setPassword('');
+    //set the authenticated state to true
+    setIsAuthenticated(true);
     //navigate to my homepage
     navigate('/');
   }
